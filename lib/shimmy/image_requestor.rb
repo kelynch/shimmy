@@ -34,7 +34,6 @@ module Shimmy
     ##
     # @return {Hurley::Response}
     def iiif_service
-      binding.pry
       response = Hurley.get(@iiifify_service, url: @request_url)
       fail 'Bad response' if response.status_code != 200
       fail 'Incorrect content type' if response.header['Content-Type'] != 'application/json'
