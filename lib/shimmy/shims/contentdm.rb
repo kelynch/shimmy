@@ -29,14 +29,15 @@ module Shimmy
         sequence = IIIF::Presentation::Sequence.new
 
         canvas = IIIF::Presentation::Canvas.new
+        image_cdm = Shimmy::ImageRequestor.new(@image.asset_url)
 
-        canvas.width = @@hr_width
-        canvas.height = @@hr_height
+        canvas.width = image_cdm.width
+        canvas.height = image_cdm.height
         canvas.label = @image["dc.title"]
 
-        canvas['@id'] = Shimmy::ImageRequestor.new(@image.asset_url).iiifify
+        canvas['@id'] = image_cdm.service_url
         anno = IIIF::Presentation::Annotation.new()
-        ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(resource_id: @image.asset_url, service_id: Shimmy::ImageRequestor.new(@image.asset_url).iiifify)
+        ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(resource_id: @image.asset_url, service_id: image_cdm.service_url)
         anno.resource = ic
         canvas.images << anno
         sequence.canvases << canvas
