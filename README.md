@@ -24,21 +24,21 @@ Or install it yourself as:
 
 ## Usage
 
-Implemented shims should inherit from `Shimmy::Shims::BaseShim` or 
+Implemented shims should inherit from `Shimmy::Shims::BaseShim` or
 `Shimmy::Shims::BaseHttpShim`, and at a minimum should implement the
 `#initialize` and `#to_iiif` methods.
 
-Example shims can be found in `lib/shimmy/shims`. 
+Example shims can be found in `lib/shimmy/shims`.
 
 ## Example (Flickr sets)
 
-Start up `pry`: 
+Start up `pry`:
 
 ```bash
 $ pry --gem
 ```
 
-Add in your Flickr API credentials ... 
+Add in your Flickr API credentials ...
 
 ```ruby
 [1] pry(main)> FlickRaw.api_key = 'a1b2c3d4e5f6API_KEY'
@@ -55,11 +55,45 @@ Pick a Flickr set and generate a manifest:
 => #<Shimmy::Shims::FlickrSet:0x007fc03dbfa130
  @set_id=72157626120220831,
  @set_metadata=
-  {"id"=>"72157626120220831", "owner"=>"35740357@N03", "username"=>"The U.S. National Archives", ...}, 
+  {"id"=>"72157626120220831", "owner"=>"35740357@N03", "username"=>"The U.S. National Archives", ...},
  @set_photos=
   {"id"=>"72157626120220831", "primary"=>"4546092598", "owner"=>"35740357@N03", "ownername"=>"The U.S. National Archives", ...}>
 [4] pry(main)> File.write('manifest.json', manifest.to_iiif(manifest_uri: 'http://foo/bar'))
 => 70407
+```
+
+## Example (CONTENTdm items)
+
+Start up `pry`:
+
+```bash
+$ pry --gem
+```
+
+Select a CONTENTdm collection and item, then run the following command in pry to generate the manifest (CONTENTdm server URL [where the API is accessible], CONTENTdm assets URL [general unaliased URL from which images etc can be acccessed], collection alias, and item id):
+
+```
+[1] pry(main)> manifest = Shimmy::Shims::Contentdm.new("https://server00000.contentdm.oclc.org/","https://cdm00000.contentdm.oclc.org","p00000col00", "111")
+=> => #<Shimmy::Shims::Contentdm:0x007fa083830808
+ @image=
+  #<RecursiveOpenStruct ... >
+[2] pry(main)> File.write('manifest.json', manifest.to_iiif(manifest_uri: 'http://foo/bar'))
+=> 1239
+```
+
+## Publishing your manifest
+
+You can quickly publish manifests that are created by using the Githubify or JsonBlob mixins.
+
+### Example
+1. Create an instance of your shim `s = Shimmy::Shims::JscImageCollection.new`
+1. Call `update_blob` on your shim
+
+```
+> s = Shimmy::Shims::JscImageCollection.new
+> s.update_blog
+=> "https://jsonblob.com/api/jsonBlob/560d3e36e4b01190df3a3ad7"
+
 ```
 
 ## Development

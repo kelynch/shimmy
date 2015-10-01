@@ -8,7 +8,11 @@ module Shimmy
     class JscImageCollection < BaseHttpShim
       attr_accessor :ng
       def initialize
-        @ng = Nokogiri::HTML(Hurley.get(base_url, params).body)
+        @ng = Nokogiri::HTML(response.body)
+      end
+
+      def response
+        Hurley.get(base_url, params)
       end
 
       def base_url
@@ -20,16 +24,16 @@ module Shimmy
           searchpage: true,
           selections: 'AS13',
           browsepage: 'Go',
-          hitsperpage: 200,
+          hitsperpage: 2,
           'submit.x' => 0,
           'submit.y' => 0,
           submit: 'submit'
         }
       end
 
-      def to_iiif(manifest_uri: 'yolo')
+      def to_iiif(manifest_uri)
         manifest = IIIF::Presentation::Manifest.new(
-          '@id' => :manifest_uri,
+          '@id' => manifest_uri,
           'label' => 'Apollo XIII'
         )
 
@@ -42,7 +46,12 @@ module Shimmy
           canvas.label = row.label
           canvas['@id'] = row.image_url
           anno = IIIF::Presentation::Annotation.new()
-          ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(resource_id: row.static_image, service_id: row.image_url)
+          ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(
+            resource_id: row.static_image,
+            service_id: row.image_url,
+            width: row.image_requestor.width,
+            height: row.image_requestor.height
+          )
           anno.resource = ic
           canvas.images << anno
           sequence.canvases << canvas
@@ -95,7 +104,7 @@ module Shimmy
       end
 
       def image_url
-        image_requestor.iiifify
+        image_requestor.service_url
       end
 
       def width
