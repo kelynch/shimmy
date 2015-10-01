@@ -1,6 +1,7 @@
 require 'json'
 require 'contentdm'
 require 'iiif/presentation'
+require 'recursive_open_struct'
 
 module Shimmy
 
