@@ -30,7 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'nokogiri'
   spec.add_dependency 'osullivan'
   spec.add_dependency 'flickraw'
-  spec.add_dependency 'json'
   spec.add_dependency 'contentdm'
   spec.add_dependency 'omeka_client'
 
