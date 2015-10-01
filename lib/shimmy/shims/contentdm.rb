@@ -7,9 +7,13 @@ asset_url = 'https://server16002.contentdm.oclc.org/'
 collection_alias = 'p16002coll19'
 
 module Shimmy
+
   module Shims
     # A shim for CONTENTdm
     class Contentdm < BaseShim
+
+      @@hr_width = @@hr_height = 1400
+      @@hr_scale = "25.000"
 
       attr_accessor :image
 
@@ -25,13 +29,13 @@ module Shimmy
         '@id' => manifest_uri,
         'label' => @image["dc.title"]
         )
-        
+
         sequence = IIIF::Presentation::Sequence.new
 
         canvas = IIIF::Presentation::Canvas.new
 
-        canvas.width = 600
-        canvas.height = 1000
+        canvas.width = @@hr_width
+        canvas.height = @@hr_height
         canvas.label = @image["dc.title"]
 
         canvas['@id'] = Shimmy::ImageRequestor.new(@image.asset_url).iiifify
@@ -46,9 +50,7 @@ module Shimmy
       end
 
       def define_cdm_asset_url(asset_url, collection_alias, item_id)
-        hr_scale = "25.000"
-        hr_width = hr_height = 1400
-        path = "#{asset_url}/utils/ajaxhelper/?CISOROOT=/#{collection_alias}&CISOPTR=#{item_id}&action=2&DMSCALE=#{hr_scale}&DMWIDTH=#{hr_width}&DMHEIGHT=#{hr_height}"
+        path = "#{asset_url}/utils/ajaxhelper/?CISOROOT=/#{collection_alias}&CISOPTR=#{item_id}&action=2&DMSCALE=#{@@hr_scale}&DMWIDTH=#{@@hr_width}&DMHEIGHT=#{@@hr_height}"
         path
       end
 
