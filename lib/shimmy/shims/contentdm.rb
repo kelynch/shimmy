@@ -16,12 +16,19 @@ module Shimmy
 
       def initialize(server_url, asset_url, collection_alias, item_id)
         harvester = ContentDm::Harvester.new(server_url)
-        cdm_image = harvester.get_record(collection_alias,item_id)
+
+        begin
+          cdm_image = harvester.get_record(collection_alias,item_id)
+        rescue
+          fail "No OAI available for this record from CONTENTdm"
+        end
+
+
         @image = RecursiveOpenStruct.new(cdm_image.metadata, :recurse_over_arrays => true)
         @image.asset_url = define_cdm_asset_url(asset_url, collection_alias, item_id)
       end
 
-      def to_iiif(manifest_uri: nil )
+      def to_iiif(manifest_uri)
         manifest = IIIF::Presentation::Manifest.new(
         '@id' => manifest_uri,
         'label' => @image["dc.title"]
