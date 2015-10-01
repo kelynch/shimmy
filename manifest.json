@@ -1,0 +1,38 @@
+{
+  "@context": "http://iiif.io/api/presentation/2/context.json",
+  "@id": "http://foo/bar",
+  "@type": "sc:Manifest",
+  "label": "pepperoni pizza",
+  "sequences": [
+    {
+      "@type": "sc:Sequence",
+      "canvases": [
+        {
+          "@id": "http://dlss-dev-azaroth.stanford.edu/services/iiif/51bfbb3d51ff82c5f03f01a4b3a1f35a",
+          "@type": "sc:Canvas",
+          "width": 512,
+          "height": 298,
+          "label": "pepperoni pizza",
+          "images": [
+            {
+              "@type": "oa:Annotation",
+              "motivation": "sc:painting",
+              "resource": {
+                "@id": "http://gamma.library.temple.edu/omeka_a11y/files/original/ee76141131b56b8a042494c04dbb44cd.png",
+                "@type": "dcterms:Image",
+                "format": "image/jpeg",
+                "width": 512,
+                "height": 298,
+                "service": {
+                  "@context": "http://iiif.io/api/image/2/context.json",
+                  "@id": "http://dlss-dev-azaroth.stanford.edu/services/iiif/51bfbb3d51ff82c5f03f01a4b3a1f35a",
+                  "profile": "http://iiif.io/api/image/2/level2.json"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
