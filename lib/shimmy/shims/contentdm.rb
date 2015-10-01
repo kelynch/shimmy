@@ -1,3 +1,4 @@
+require 'json'
 require 'contentdm'
 require 'iiif/presentation'
 
@@ -14,10 +15,11 @@ module Shimmy
       def initialize(url, collection_alias, item_id)
         harvester = ContentDm::Harvester.new(url)
         cdm_image = harvester.get_record(collection_alias,item_id)
-        @image = cdm_image
+        @image = RecursiveOpenStruct.new(cdm_image.metadata, :recurse_over_arrays => true)
       end
 
       def to_iiif(manifest_uri: nil )
+        binding.pry
         manifest = IIIF::Presentation::Manifest.new(
         '@id' => manifest_uri,
         'label' => @image.metadata["dc.title"]
@@ -30,6 +32,7 @@ module Shimmy
         canvas.width = 600
         canvas.height = 1000
         canvas.label = @image.metadata["dc.title"]
+
         canvas['@id'] = Shimmy::ImageRequestor.new(@image.metadata["dc.identifier"]).iiifify
         anno = IIIF::Presentation::Annotation.new()
         ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(resource_id: @image.metadata["dc.identifier"], service_id: Shimmy::ImageRequestor.new(@image.metadata["dc.identifier"]).iiifify)
