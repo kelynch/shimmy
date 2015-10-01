@@ -19,10 +19,9 @@ module Shimmy
       end
 
       def to_iiif(manifest_uri: nil )
-        binding.pry
         manifest = IIIF::Presentation::Manifest.new(
         '@id' => manifest_uri,
-        'label' => @image.metadata["dc.title"]
+        'label' => @image["dc.title"]
         )
 
         sequence = IIIF::Presentation::Sequence.new
@@ -31,11 +30,11 @@ module Shimmy
 
         canvas.width = 600
         canvas.height = 1000
-        canvas.label = @image.metadata["dc.title"]
+        canvas.label = @image["dc.title"]
 
-        canvas['@id'] = Shimmy::ImageRequestor.new(@image.metadata["dc.identifier"]).iiifify
+        canvas['@id'] = Shimmy::ImageRequestor.new(@image["dc.identifier"]).iiifify
         anno = IIIF::Presentation::Annotation.new()
-        ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(resource_id: @image.metadata["dc.identifier"], service_id: Shimmy::ImageRequestor.new(@image.metadata["dc.identifier"]).iiifify)
+        ic = IIIF::Presentation::ImageResource.create_image_api_image_resource(resource_id: @image["dc.identifier"], service_id: Shimmy::ImageRequestor.new(@image["dc.identifier"]).iiifify)
         anno.resource = ic
         canvas.images << anno
         sequence.canvases << canvas
