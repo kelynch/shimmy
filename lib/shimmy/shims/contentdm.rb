@@ -2,10 +2,6 @@ require 'json'
 require 'contentdm'
 require 'iiif/presentation'
 
-server_url = 'https://server16002.contentdm.oclc.org/'
-asset_url = 'https://server16002.contentdm.oclc.org/'
-collection_alias = 'p16002coll19'
-
 module Shimmy
 
   module Shims
@@ -55,9 +51,6 @@ module Shimmy
       end
 
     end
-
-
-
 
   end
 end
