@@ -93,7 +93,7 @@ You can quickly publish manifests that are created by using the Githubify or Jso
 > s = Shimmy::Shims::JscImageCollection.new
 > s.update_blog
 => "https://jsonblob.com/api/jsonBlob/560d3e36e4b01190df3a3ad7"
->>>>>>> master
+
 ```
 
 ## Development
